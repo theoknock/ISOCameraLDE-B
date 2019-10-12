@@ -3,17 +3,26 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		8A765046234E05A10011CAA4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A765045234E05A10011CAA4 /* AppDelegate.m */; };
 		8A765049234E05A10011CAA4 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A765048234E05A10011CAA4 /* SceneDelegate.m */; };
-		8A76504C234E05A10011CAA4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A76504B234E05A10011CAA4 /* ViewController.m */; };
 		8A76504F234E05A10011CAA4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A76504D234E05A10011CAA4 /* Main.storyboard */; };
 		8A765051234E05AC0011CAA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A765050234E05AC0011CAA4 /* Assets.xcassets */; };
 		8A765054234E05AC0011CAA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A765052234E05AC0011CAA4 /* LaunchScreen.storyboard */; };
 		8A765057234E05AC0011CAA4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A765056234E05AC0011CAA4 /* main.m */; };
+		8A765070234E081E0011CAA4 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A76505E234E081D0011CAA4 /* CameraViewController.m */; };
+		8A765071234E081E0011CAA4 /* ScaleSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A765061234E081E0011CAA4 /* ScaleSliderView.m */; };
+		8A765072234E081E0011CAA4 /* CameraControlsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A765062234E081E0011CAA4 /* CameraControlsView.m */; };
+		8A765076234E081E0011CAA4 /* ScaleSliderLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A765069234E081E0011CAA4 /* ScaleSliderLayer.m */; };
+		8A765077234E081E0011CAA4 /* ScaleSliderControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A76506B234E081E0011CAA4 /* ScaleSliderControlView.m */; };
+		8A765078234E081E0011CAA4 /* CameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A76506F234E081E0011CAA4 /* CameraView.m */; };
+		8AFF40D6234E850700C3F94A /* ScaleSliderOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF40D2234E850700C3F94A /* ScaleSliderOverlayView.m */; };
+		8AFF40D7234E850700C3F94A /* ScaleSliderOverlayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF40D3234E850700C3F94A /* ScaleSliderOverlayLayer.m */; };
+		B95FB2F42351510600337772 /* CameraPropertiesDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = B95FB2F32351510600337772 /* CameraPropertiesDispatcher.m */; };
+		B993FDF223511EFF00BD24A9 /* KeyValueObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = B993FDF123511EFF00BD24A9 /* KeyValueObserver.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,13 +31,31 @@
 		8A765045234E05A10011CAA4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		8A765047234E05A10011CAA4 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		8A765048234E05A10011CAA4 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
-		8A76504A234E05A10011CAA4 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		8A76504B234E05A10011CAA4 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		8A76504E234E05A10011CAA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8A765050234E05AC0011CAA4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8A765053234E05AC0011CAA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8A765055234E05AC0011CAA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A765056234E05AC0011CAA4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8A76505D234E081D0011CAA4 /* CameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraView.h; sourceTree = "<group>"; };
+		8A76505E234E081D0011CAA4 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
+		8A765061234E081E0011CAA4 /* ScaleSliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScaleSliderView.m; path = ../ScaleSliderView.m; sourceTree = "<group>"; };
+		8A765062234E081E0011CAA4 /* CameraControlsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraControlsView.m; sourceTree = "<group>"; wrapsLines = 0; };
+		8A765063234E081E0011CAA4 /* ScaleSliderLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScaleSliderLayer.h; path = ../ScaleSliderLayer.h; sourceTree = "<group>"; };
+		8A765064234E081E0011CAA4 /* ScaleSliderControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScaleSliderControlView.h; sourceTree = "<group>"; };
+		8A765068234E081E0011CAA4 /* CameraControlsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraControlsView.h; sourceTree = "<group>"; };
+		8A765069234E081E0011CAA4 /* ScaleSliderLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScaleSliderLayer.m; path = ../ScaleSliderLayer.m; sourceTree = "<group>"; };
+		8A76506A234E081E0011CAA4 /* ScaleSliderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScaleSliderView.h; path = ../ScaleSliderView.h; sourceTree = "<group>"; };
+		8A76506B234E081E0011CAA4 /* ScaleSliderControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScaleSliderControlView.m; sourceTree = "<group>"; };
+		8A76506E234E081E0011CAA4 /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
+		8A76506F234E081E0011CAA4 /* CameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraView.m; sourceTree = "<group>"; };
+		8AFF40D2234E850700C3F94A /* ScaleSliderOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScaleSliderOverlayView.m; sourceTree = "<group>"; };
+		8AFF40D3234E850700C3F94A /* ScaleSliderOverlayLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScaleSliderOverlayLayer.m; sourceTree = "<group>"; };
+		8AFF40D4234E850700C3F94A /* ScaleSliderOverlayLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScaleSliderOverlayLayer.h; sourceTree = "<group>"; };
+		8AFF40D5234E850700C3F94A /* ScaleSliderOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScaleSliderOverlayView.h; sourceTree = "<group>"; };
+		B95FB2F22351510600337772 /* CameraPropertiesDispatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraPropertiesDispatcher.h; sourceTree = "<group>"; };
+		B95FB2F32351510600337772 /* CameraPropertiesDispatcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraPropertiesDispatcher.m; sourceTree = "<group>"; wrapsLines = 0; };
+		B993FDF023511EFF00BD24A9 /* KeyValueObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KeyValueObserver.h; path = "ISOCameraLDE-B/KeyValueObserver.h"; sourceTree = "<group>"; };
+		B993FDF123511EFF00BD24A9 /* KeyValueObserver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = KeyValueObserver.m; path = "ISOCameraLDE-B/KeyValueObserver.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +72,8 @@
 		8A765038234E05A00011CAA4 = {
 			isa = PBXGroup;
 			children = (
+				B993FDF023511EFF00BD24A9 /* KeyValueObserver.h */,
+				B993FDF123511EFF00BD24A9 /* KeyValueObserver.m */,
 				8A765043234E05A10011CAA4 /* ISOCameraLDE-B */,
 				8A765042234E05A10011CAA4 /* Products */,
 			);
@@ -61,12 +90,15 @@
 		8A765043234E05A10011CAA4 /* ISOCameraLDE-B */ = {
 			isa = PBXGroup;
 			children = (
+				8A76506E234E081E0011CAA4 /* CameraViewController.h */,
+				8A76505E234E081D0011CAA4 /* CameraViewController.m */,
+				8A76505D234E081D0011CAA4 /* CameraView.h */,
+				8A76506F234E081E0011CAA4 /* CameraView.m */,
+				8A76505F234E081E0011CAA4 /* Camera Controls */,
 				8A765044234E05A10011CAA4 /* AppDelegate.h */,
 				8A765045234E05A10011CAA4 /* AppDelegate.m */,
 				8A765047234E05A10011CAA4 /* SceneDelegate.h */,
 				8A765048234E05A10011CAA4 /* SceneDelegate.m */,
-				8A76504A234E05A10011CAA4 /* ViewController.h */,
-				8A76504B234E05A10011CAA4 /* ViewController.m */,
 				8A76504D234E05A10011CAA4 /* Main.storyboard */,
 				8A765050234E05AC0011CAA4 /* Assets.xcassets */,
 				8A765052234E05AC0011CAA4 /* LaunchScreen.storyboard */,
@@ -74,6 +106,43 @@
 				8A765056234E05AC0011CAA4 /* main.m */,
 			);
 			path = "ISOCameraLDE-B";
+			sourceTree = "<group>";
+		};
+		8A76505F234E081E0011CAA4 /* Camera Controls */ = {
+			isa = PBXGroup;
+			children = (
+				8A765068234E081E0011CAA4 /* CameraControlsView.h */,
+				8A765062234E081E0011CAA4 /* CameraControlsView.m */,
+				8A765064234E081E0011CAA4 /* ScaleSliderControlView.h */,
+				8A76506B234E081E0011CAA4 /* ScaleSliderControlView.m */,
+				8A76507C234E83910011CAA4 /* ScaleSlider */,
+				8A76507B234E81CF0011CAA4 /* ScaleSliderOverlay */,
+				B95FB2F22351510600337772 /* CameraPropertiesDispatcher.h */,
+				B95FB2F32351510600337772 /* CameraPropertiesDispatcher.m */,
+			);
+			path = "Camera Controls";
+			sourceTree = "<group>";
+		};
+		8A76507B234E81CF0011CAA4 /* ScaleSliderOverlay */ = {
+			isa = PBXGroup;
+			children = (
+				8AFF40D5234E850700C3F94A /* ScaleSliderOverlayView.h */,
+				8AFF40D2234E850700C3F94A /* ScaleSliderOverlayView.m */,
+				8AFF40D4234E850700C3F94A /* ScaleSliderOverlayLayer.h */,
+				8AFF40D3234E850700C3F94A /* ScaleSliderOverlayLayer.m */,
+			);
+			path = ScaleSliderOverlay;
+			sourceTree = "<group>";
+		};
+		8A76507C234E83910011CAA4 /* ScaleSlider */ = {
+			isa = PBXGroup;
+			children = (
+				8A76506A234E081E0011CAA4 /* ScaleSliderView.h */,
+				8A765061234E081E0011CAA4 /* ScaleSliderView.m */,
+				8A765063234E081E0011CAA4 /* ScaleSliderLayer.h */,
+				8A765069234E081E0011CAA4 /* ScaleSliderLayer.m */,
+			);
+			path = ScaleSlider;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -111,7 +180,7 @@
 				};
 			};
 			buildConfigurationList = 8A76503C234E05A00011CAA4 /* Build configuration list for PBXProject "ISOCameraLDE-B" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -146,9 +215,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A76504C234E05A10011CAA4 /* ViewController.m in Sources */,
+				B95FB2F42351510600337772 /* CameraPropertiesDispatcher.m in Sources */,
+				8A765072234E081E0011CAA4 /* CameraControlsView.m in Sources */,
+				8A765070234E081E0011CAA4 /* CameraViewController.m in Sources */,
+				8AFF40D7234E850700C3F94A /* ScaleSliderOverlayLayer.m in Sources */,
+				8A765076234E081E0011CAA4 /* ScaleSliderLayer.m in Sources */,
 				8A765046234E05A10011CAA4 /* AppDelegate.m in Sources */,
 				8A765057234E05AC0011CAA4 /* main.m in Sources */,
+				8AFF40D6234E850700C3F94A /* ScaleSliderOverlayView.m in Sources */,
+				B993FDF223511EFF00BD24A9 /* KeyValueObserver.m in Sources */,
+				8A765078234E081E0011CAA4 /* CameraView.m in Sources */,
+				8A765071234E081E0011CAA4 /* ScaleSliderView.m in Sources */,
+				8A765077234E081E0011CAA4 /* ScaleSliderControlView.m in Sources */,
 				8A765049234E05A10011CAA4 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

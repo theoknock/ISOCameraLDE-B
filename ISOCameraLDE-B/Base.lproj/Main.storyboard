@@ -1,24 +1,216 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_5" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15508"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Camera View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="CameraViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <view userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Xzt-iO-ced" customClass="CameraView">
+                                <rect key="frame" x="0.0" y="44" width="414" height="736"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" secondItem="Xzt-iO-ced" secondAttribute="width" multiplier="16:9" priority="750" id="y2X-gp-JJD"/>
+                                </constraints>
+                            </view>
+                            <view opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RaZ-vM-Bf4" customClass="CameraControlsView">
+                                <rect key="frame" x="0.0" y="780" width="414" height="82"/>
+                                <subviews>
+                                    <stackView opaque="NO" multipleTouchEnabled="YES" tag="7" contentMode="scaleToFill" distribution="fillEqually" alignment="bottom" spacing="1" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e0d-gl-0Yj" userLabel="Button Stack View">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="82"/>
+                                        <subviews>
+                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d9f-cE-wZk" userLabel="Record">
+                                                <rect key="frame" x="0.0" y="34" width="68.333333333333329" height="48"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <state key="normal" image="camera.circle" catalog="system">
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="large">
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                                    </preferredSymbolConfiguration>
+                                                </state>
+                                                <connections>
+                                                    <action selector="recordActionHandler:" destination="RaZ-vM-Bf4" eventType="touchUpInside" id="jIF-C0-Yph"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1oe-yR-dM8" userLabel="Exposure Duration">
+                                                <rect key="frame" x="69.333333333333329" y="34" width="67.999999999999986" height="48"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <state key="normal" image="timer" catalog="system">
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="large">
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                                    </preferredSymbolConfiguration>
+                                                </state>
+                                                <connections>
+                                                    <action selector="cameraControlAction:" destination="RaZ-vM-Bf4" eventType="touchUpInside" id="iYC-SU-Nyo"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wCC-wi-bYd" userLabel="ISO">
+                                                <rect key="frame" x="138.33333333333334" y="31" width="68.333333333333343" height="51"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <state key="normal" title="10.0" image="sun.max" catalog="system">
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="large">
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                                    </preferredSymbolConfiguration>
+                                                </state>
+                                                <connections>
+                                                    <action selector="cameraControlAction:" destination="RaZ-vM-Bf4" eventType="touchUpInside" id="rtw-Qq-r9i"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cmG-81-aAG" userLabel="Focus">
+                                                <rect key="frame" x="207.66666666666666" y="34" width="67.999999999999972" height="48"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <state key="normal" title="10.0" image="viewfinder.circle" catalog="system">
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="large">
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                                    </preferredSymbolConfiguration>
+                                                </state>
+                                                <connections>
+                                                    <action selector="cameraControlAction:" destination="RaZ-vM-Bf4" eventType="touchUpInside" id="0fs-pB-wYJ"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6BM-EC-R7x" userLabel="Torch">
+                                                <rect key="frame" x="276.66666666666669" y="34" width="68.333333333333314" height="48"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <state key="normal" title="10.0" image="bolt.circle" catalog="system">
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="large">
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                                    </preferredSymbolConfiguration>
+                                                </state>
+                                                <connections>
+                                                    <action selector="cameraControlAction:" destination="RaZ-vM-Bf4" eventType="touchUpInside" id="DCY-QI-6TE"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0w-KL-LQQ" userLabel="Zoom">
+                                                <rect key="frame" x="346" y="34" width="68" height="48"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <state key="normal" title="10.0" image="magnifyingglass.circle" catalog="system">
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="large">
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                                    </preferredSymbolConfiguration>
+                                                </state>
+                                                <connections>
+                                                    <action selector="cameraControlAction:" destination="RaZ-vM-Bf4" eventType="touchUpInside" id="0ae-h0-ymw"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </stackView>
+                                    <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Mw-MC-Kxr" customClass="ScaleSliderControlView">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="82"/>
+                                        <subviews>
+                                            <scrollView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="black" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m0T-st-5p9">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="82"/>
+                                                <subviews>
+                                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qJB-oS-imz" customClass="ScaleSliderView">
+                                                        <rect key="frame" x="0.0" y="0.0" width="828" height="82"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mdx-M6-Vm9" customClass="ScaleSliderOverlayView">
+                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="82"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="mdx-M6-Vm9" firstAttribute="width" secondItem="RlU-VS-wqF" secondAttribute="width" id="2MA-GJ-TEw"/>
+                                                    <constraint firstItem="mdx-M6-Vm9" firstAttribute="trailing" secondItem="RlU-VS-wqF" secondAttribute="trailing" id="FND-dq-iLj"/>
+                                                    <constraint firstItem="qJB-oS-imz" firstAttribute="trailing" secondItem="6Dg-qW-FHO" secondAttribute="trailing" id="HSN-gV-Y4B"/>
+                                                    <constraint firstItem="mdx-M6-Vm9" firstAttribute="top" secondItem="RlU-VS-wqF" secondAttribute="top" id="O6o-Ht-ymG"/>
+                                                    <constraint firstItem="mdx-M6-Vm9" firstAttribute="height" secondItem="RlU-VS-wqF" secondAttribute="height" id="PUJ-K3-1cp"/>
+                                                    <constraint firstItem="qJB-oS-imz" firstAttribute="leading" secondItem="6Dg-qW-FHO" secondAttribute="leading" id="Rgc-4y-bx2"/>
+                                                    <constraint firstItem="mdx-M6-Vm9" firstAttribute="bottom" secondItem="RlU-VS-wqF" secondAttribute="bottom" id="UtB-Jt-Vlg"/>
+                                                    <constraint firstItem="qJB-oS-imz" firstAttribute="bottom" secondItem="RlU-VS-wqF" secondAttribute="bottom" id="Vey-Tg-RPd"/>
+                                                    <constraint firstItem="mdx-M6-Vm9" firstAttribute="centerX" secondItem="RlU-VS-wqF" secondAttribute="centerX" id="cLF-qv-e7n"/>
+                                                    <constraint firstItem="mdx-M6-Vm9" firstAttribute="leading" secondItem="RlU-VS-wqF" secondAttribute="leading" id="gLT-MP-Lao"/>
+                                                    <constraint firstItem="mdx-M6-Vm9" firstAttribute="centerY" secondItem="RlU-VS-wqF" secondAttribute="centerY" id="nuV-jb-LlW"/>
+                                                    <constraint firstItem="qJB-oS-imz" firstAttribute="top" secondItem="RlU-VS-wqF" secondAttribute="top" id="oY0-8h-ZRE"/>
+                                                </constraints>
+                                                <viewLayoutGuide key="contentLayoutGuide" id="6Dg-qW-FHO"/>
+                                                <viewLayoutGuide key="frameLayoutGuide" id="RlU-VS-wqF"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="RaZ-vM-Bf4" id="FSx-MU-WUs"/>
+                                                </connections>
+                                            </scrollView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="m0T-st-5p9" firstAttribute="trailing" secondItem="9Mw-MC-Kxr" secondAttribute="trailing" id="3jk-dP-44a"/>
+                                            <constraint firstItem="m0T-st-5p9" firstAttribute="top" secondItem="9Mw-MC-Kxr" secondAttribute="top" id="CFw-M5-Em2"/>
+                                            <constraint firstItem="m0T-st-5p9" firstAttribute="leading" secondItem="9Mw-MC-Kxr" secondAttribute="leading" id="Knl-l8-2ex"/>
+                                            <constraint firstItem="m0T-st-5p9" firstAttribute="bottom" secondItem="9Mw-MC-Kxr" secondAttribute="bottom" id="p1S-W2-hnf"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="e0d-gl-0Yj" firstAttribute="centerX" secondItem="RaZ-vM-Bf4" secondAttribute="centerX" id="7hu-5l-Yss"/>
+                                    <constraint firstItem="RlU-VS-wqF" firstAttribute="height" secondItem="e0d-gl-0Yj" secondAttribute="height" id="GSf-dO-i5i"/>
+                                    <constraint firstItem="e0d-gl-0Yj" firstAttribute="centerY" secondItem="RaZ-vM-Bf4" secondAttribute="centerY" id="H4z-wg-AAy"/>
+                                    <constraint firstItem="9Mw-MC-Kxr" firstAttribute="bottom" secondItem="RaZ-vM-Bf4" secondAttribute="bottom" id="HNj-vb-zHH"/>
+                                    <constraint firstItem="e0d-gl-0Yj" firstAttribute="top" secondItem="RaZ-vM-Bf4" secondAttribute="top" id="UmF-iJ-u5C"/>
+                                    <constraint firstItem="9Mw-MC-Kxr" firstAttribute="leading" secondItem="RaZ-vM-Bf4" secondAttribute="leading" id="WKF-pf-B6t"/>
+                                    <constraint firstItem="6Dg-qW-FHO" firstAttribute="width" secondItem="e0d-gl-0Yj" secondAttribute="width" multiplier="2" id="WOx-Aa-Q1n"/>
+                                    <constraint firstItem="e0d-gl-0Yj" firstAttribute="bottom" secondItem="RaZ-vM-Bf4" secondAttribute="bottom" id="WqW-oP-Lxw"/>
+                                    <constraint firstItem="6Dg-qW-FHO" firstAttribute="height" secondItem="e0d-gl-0Yj" secondAttribute="height" id="apQ-xs-Lb0"/>
+                                    <constraint firstItem="e0d-gl-0Yj" firstAttribute="leading" secondItem="RaZ-vM-Bf4" secondAttribute="leading" id="dNu-ne-NDG"/>
+                                    <constraint firstItem="RlU-VS-wqF" firstAttribute="width" secondItem="e0d-gl-0Yj" secondAttribute="width" id="pFn-CQ-4xU"/>
+                                    <constraint firstItem="9Mw-MC-Kxr" firstAttribute="trailing" secondItem="RaZ-vM-Bf4" secondAttribute="trailing" id="rvv-OT-8N5"/>
+                                    <constraint firstItem="e0d-gl-0Yj" firstAttribute="trailing" secondItem="RaZ-vM-Bf4" secondAttribute="trailing" id="wXV-OP-T54"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="cameraControlButtonsStackView" destination="e0d-gl-0Yj" id="yzU-XK-nL7"/>
+                                    <outlet property="scaleSliderControlView" destination="9Mw-MC-Kxr" id="tZ4-Ha-ggd"/>
+                                    <outlet property="scaleSliderOverlayView" destination="mdx-M6-Vm9" id="cWm-mm-cN7"/>
+                                    <outlet property="scaleSliderScrollView" destination="m0T-st-5p9" id="0hf-6m-bnI"/>
+                                    <outletCollection property="cameraPropertyButtons" destination="cmG-81-aAG" id="d9S-m7-Tz0"/>
+                                    <outletCollection property="cameraPropertyButtons" destination="6BM-EC-R7x" id="Nya-qR-sNM"/>
+                                    <outletCollection property="cameraPropertyButtons" destination="G0w-KL-LQQ" id="hDw-Cr-fok"/>
+                                    <outletCollection property="cameraPropertyButtons" destination="wCC-wi-bYd" id="z0J-ee-p7G"/>
+                                    <outletCollection property="cameraPropertyButtons" destination="1oe-yR-dM8" id="xbO-Fm-cIP"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Xzt-iO-ced" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="5sr-Pa-WZt"/>
+                            <constraint firstItem="Xzt-iO-ced" firstAttribute="height" relation="lessThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="height" id="61O-Hz-qwg"/>
+                            <constraint firstItem="RaZ-vM-Bf4" firstAttribute="top" secondItem="Xzt-iO-ced" secondAttribute="bottom" id="WAp-LW-kZ5"/>
+                            <constraint firstItem="9Mw-MC-Kxr" firstAttribute="top" secondItem="Xzt-iO-ced" secondAttribute="bottom" id="bdt-7F-aVL"/>
+                            <constraint firstItem="RaZ-vM-Bf4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="cDe-aq-w18"/>
+                            <constraint firstItem="RaZ-vM-Bf4" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="glq-zU-KSO"/>
+                            <constraint firstItem="Xzt-iO-ced" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="gwS-jU-Rin"/>
+                            <constraint firstItem="Xzt-iO-ced" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="oM2-rI-87L"/>
+                            <constraint firstItem="Xzt-iO-ced" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="pGZ-9G-er7"/>
+                            <constraint firstItem="Xzt-iO-ced" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="pno-Zu-KpQ"/>
+                            <constraint firstItem="RaZ-vM-Bf4" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="reM-bJ-Vld"/>
+                            <constraint firstItem="Xzt-iO-ced" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" id="zeu-fk-qpe"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="cameraControlsView" destination="RaZ-vM-Bf4" id="sNs-Mc-bTy"/>
+                        <outlet property="cameraView" destination="Xzt-iO-ced" id="vMy-j3-xKz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-1639.2857142857142" y="-252.17391304347828"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="bolt.circle" catalog="system" width="64" height="60"/>
+        <image name="camera.circle" catalog="system" width="64" height="60"/>
+        <image name="magnifyingglass.circle" catalog="system" width="64" height="60"/>
+        <image name="sun.max" catalog="system" width="64" height="62"/>
+        <image name="timer" catalog="system" width="64" height="60"/>
+        <image name="viewfinder.circle" catalog="system" width="64" height="60"/>
+    </resources>
 </document>
