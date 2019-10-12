@@ -12,7 +12,13 @@ typedef enum : NSUInteger {
 } ExposureDurationMode;
 
 typedef enum : NSUInteger {
+    CameraPropertyPositionRear,
+    CameraPropertyPositionFront,
+} CameraPropertyPositions;
+
+typedef enum : NSUInteger {
     CameraPropertyInvalid,
+    CameraPropertyPosition,
     CameraPropertyRecord,
     CameraPropertyExposureDuration,
     CameraPropertyISO,

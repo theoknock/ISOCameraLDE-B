@@ -242,6 +242,11 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                         {
                             NSLog(@"Error configuring camera for highest frame rate: %@", error_description);
                         }
+                        [self autoExposureWithCompletionHandler:^(double ISO) {
+                            [self autoFocusWithCompletionHandler:^(double focus) {
+                                
+                            }];
+                        }];
                     }];
                 } else {
                     NSLog(@"Session is running");
@@ -530,6 +535,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                             [self.videoDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:ISO completionHandler:^(CMTime syncTime) {
                                 NSLog(@"ISO (%lu) value: %f", property, value);
                             }];
+                            [self setISO:self.videoDevice.ISO];
                             [self didChangeValueForKey:@"ISO"];
                         }
                     
@@ -947,49 +953,49 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 //    }
 //}
 
-//- (void)autoFocusWithCompletionHandler:(void (^)(double focus))completionHandler
-//{
-//    //    NSLog(@"%s", __PRETTY_FUNCTION__);
-//    __autoreleasing NSError *error;
-//    @try {
-//        if (![self.videoDevice isAdjustingFocus] && [self.videoDevice lockForConfiguration:&error]) {
-//            [self.videoDevice setFocusMode:AVCaptureFocusModeAutoFocus];
-//        }
-//    } @catch (NSException *exception) {
-//        NSLog( @"ERROR auto-focusing:%@\t%@", exception.description, error.description);
-//    } @finally {
-//        [self unlockDevice];
-//        //            while ([self.videoDevice isAdjustingFocus]) {
-//        //
-//        //            }
-//        //            completionHandler([self.videoDevice lensPosition]);
-//    }
-//}
+- (void)autoFocusWithCompletionHandler:(void (^)(double focus))completionHandler
+{
+    //    NSLog(@"%s", __PRETTY_FUNCTION__);
+    __autoreleasing NSError *error;
+    @try {
+        if (![self.videoDevice isAdjustingFocus] && [self.videoDevice lockForConfiguration:&error]) {
+            [self.videoDevice setFocusMode:AVCaptureFocusModeAutoFocus];
+        }
+    } @catch (NSException *exception) {
+        NSLog( @"ERROR auto-focusing:%@\t%@", exception.description, error.description);
+    } @finally {
+        [self lockDevice];
+        //            while ([self.videoDevice isAdjustingFocus]) {
+        //
+        //            }
+        //            completionHandler([self.videoDevice lensPosition]);
+    }
+}
 
-//- (void)autoExposureWithCompletionHandler:(void (^)(double ISO))completionHandler
-//{
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        //                        NSLog(@"BLOCK IS WAITING");
-//        dispatch_semaphore_wait([self device_lock_semaphore], DISPATCH_TIME_FOREVER);
-//        //                            NSLog(@"BLOCK IS SIGNALED");
-//        if (![self.videoDevice isAdjustingExposure]) {
-//            @try {
-//                [self.videoDevice setExposureMode:AVCaptureExposureModeAutoExpose];
-//            } @catch (NSException *exception) {
-//                NSLog( @"ERROR auto-focusing:\t%@", exception.description);
-//            } @finally {
-//                while ([self.videoDevice isAdjustingExposure]) {
-//
-//                }
-//                completionHandler([self.videoDevice ISO]);
-//                [self unlockDevice];
-//            }
-//        } else {
-//            NSLog( @"Could not lock device for focus configuration: %@", nil );
-//        }
-//        dispatch_semaphore_signal([self device_lock_semaphore]);
-//    });
-//}
+- (void)autoExposureWithCompletionHandler:(void (^)(double ISO))completionHandler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        //                        NSLog(@"BLOCK IS WAITING");
+        dispatch_semaphore_wait([self device_lock_semaphore], DISPATCH_TIME_FOREVER);
+        //                            NSLog(@"BLOCK IS SIGNALED");
+        if (![self.videoDevice isAdjustingExposure]) {
+            @try {
+                [self.videoDevice setExposureMode:AVCaptureExposureModeAutoExpose];
+            } @catch (NSException *exception) {
+                NSLog( @"ERROR auto-focusing:\t%@", exception.description);
+            } @finally {
+                while ([self.videoDevice isAdjustingExposure]) {
+
+                }
+                completionHandler([self.videoDevice ISO]);
+                [self lockDevice];
+            }
+        } else {
+            NSLog( @"Could not lock device for focus configuration: %@", nil );
+        }
+        dispatch_semaphore_signal([self device_lock_semaphore]);
+    });
+}
 
 //- (void)toggleTorchWithCompletionHandler:(void (^)(BOOL isTorchActive))completionHandler;
 //{
