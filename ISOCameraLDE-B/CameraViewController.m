@@ -67,7 +67,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 
 - (float)videoZoomFactor
 {
-    return self->_videoZoomFactor;
+    return [self.videoDevice videoZoomFactor]; //self->_videoZoomFactor;
 }
 //
 //+ (NSSet *)keyPathsForValuesAffectingVideoZoomFactor
@@ -82,7 +82,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 
 - (float)ISO
 {
-    return self->_ISO;
+    return [self.videoDevice ISO]; //self->_ISO;
 }
 
 #pragma mark View Controller Life Cycle
@@ -520,15 +520,13 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                         [self didChangeValueForKey:@"videoDevice.lensPosition"];
                     }
                 } else if (property == CameraPropertyISO) {
-                    if ([self.videoDevice isAdjustingFocus]) {
-                        [self willChangeValueForKey:@"ISO"];
-                    } else
+                    [self willChangeValueForKey:@"ISO"];
                         if (![self.videoDevice isAdjustingExposure]) {
                             float maxISO = self.videoDevice.activeFormat.maxISO;
                             float minISO = self.videoDevice.activeFormat.minISO;
                             float ISO = minISO + (value * (maxISO - minISO));
                             ISO = ((ISO > minISO) && (ISO < maxISO)) ? ISO : self.videoDevice.ISO;
-                            ISO = (1.0 - 0.0) * (ISO - minISO) / (maxISO - minISO) + 0.0;
+//                            ISO = (1.0 - 0.0) * (ISO - minISO) / (maxISO - minISO) + 0.0;
                             [self.videoDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:ISO completionHandler:^(CMTime syncTime) {
                                 NSLog(@"ISO (%lu) value: %f", property, value);
                             }];
