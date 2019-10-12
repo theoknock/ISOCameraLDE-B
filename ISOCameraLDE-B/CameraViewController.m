@@ -157,7 +157,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
     
     void(^session_error_cleanup)(NSString *) = ^(NSString *error_description)
     {
-        NSLog(@"Error configuring session: %@", error_description);
+        //NSLog(@"Error configuring session: %@", error_description);
         self.setupResult = AVCamManualSetupResultSessionConfigurationFailed;
         [self.session commitConfiguration];
         return;
@@ -240,7 +240,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                     [self configureCameraForHighestFrameRateWithCompletionHandler:^(NSString *error_description) {
                         if (error_description)
                         {
-                            NSLog(@"Error configuring camera for highest frame rate: %@", error_description);
+                            //NSLog(@"Error configuring camera for highest frame rate: %@", error_description);
                         }
                         [self autoExposureWithCompletionHandler:^(double ISO) {
                             [self autoFocusWithCompletionHandler:^(double focus) {
@@ -249,7 +249,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                         }];
                     }];
                 } else {
-                    NSLog(@"Session is running");
+                    //NSLog(@"Session is running");
                 }
                 break;
             }
@@ -295,7 +295,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 //                    [self.videoDevice setExposureModeCustomWithDuration:exposureDuration /*CMTimeMakeWithSeconds((1.0/3.0), 1000*1000*1000)*/ ISO:[self valueForCameraProperty:CameraPropertyISO] completionHandler:nil];
 //                }
 //                else {
-//                    NSLog( @"Exposure mode AVCaptureExposureModeCustom is not supported.");
+//                    //NSLog( @"Exposure mode AVCaptureExposureModeCustom is not supported.");
 //                }
 //                [self configureCameraForHighestFrameRate:self.videoDevice];
 //            }];
@@ -307,15 +307,15 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 //                        self.videoDevice.smoothAutoFocusEnabled = FALSE;
 //                    }
 //                    else {
-//                        NSLog( @"Focus mode AVCaptureFocusModeLocked is not supported.");
+//                        //NSLog( @"Focus mode AVCaptureFocusModeLocked is not supported.");
 //                    }
 //                }
 //                else {
-//                    NSLog( @"Could not lock device for configuration: %@", error );
+//                    //NSLog( @"Could not lock device for configuration: %@", error );
 //                }
 //            }];
 //        } @catch (NSException *exception) {
-//            NSLog( @"Error setting exposure mode to AVCaptureExposureModeCustom:\t%@\n%@.", error.description, exception.description);
+//            //NSLog( @"Error setting exposure mode to AVCaptureExposureModeCustom:\t%@\n%@.", error.description, exception.description);
 //        } @finally {
 //            [self lockDevice];
 //        }
@@ -452,7 +452,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 
 - (void)lockDevice
 {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+//    //NSLog(@"%s", __PRETTY_FUNCTION__);
     
     [self.videoDevice unlockForConfiguration];
     
@@ -465,7 +465,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                 dispatch_semaphore_signal([self device_lock_semaphore]);
             }
         } @catch (NSException *exception) {
-            NSLog( @"Could not lock device for configuration: %@\t%@", exception.description, error.description);
+            //NSLog( @"Could not lock device for configuration: %@\t%@", exception.description, error.description);
         } @finally {
             
         }
@@ -478,7 +478,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 - (void)configureCameraForHighestFrameRateWithCompletionHandler:(void (^)(NSString *error_description))completionHandler
 {
     dispatch_async([self device_configuration_queue], ^{
-        NSLog(@"%s", __PRETTY_FUNCTION__);
+//        //NSLog(@"%s", __PRETTY_FUNCTION__);
         dispatch_semaphore_wait([self device_lock_semaphore], DISPATCH_TIME_FOREVER);
         AVCaptureDeviceFormat *bestFormat = nil;
         AVFrameRateRange *bestFrameRateRange = nil;
@@ -519,7 +519,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                     [self willChangeValueForKey:@"videoDevice.lensPosition"];
                     if (![self.videoDevice isAdjustingFocus]) {
                         [self.videoDevice setFocusModeLockedWithLensPosition:value completionHandler:^(CMTime syncTime) {
-                            NSLog(@"Lens position (%lu) value: %f", property, value);
+//                            //NSLog(@"Lens position (%lu) value: %f", property, value);
                             
                         }];
                         [self didChangeValueForKey:@"videoDevice.lensPosition"];
@@ -533,7 +533,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                             ISO = ((ISO > minISO) && (ISO < maxISO)) ? ISO : self.videoDevice.ISO;
 //                            ISO = (1.0 - 0.0) * (ISO - minISO) / (maxISO - minISO) + 0.0;
                             [self.videoDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:ISO completionHandler:^(CMTime syncTime) {
-                                NSLog(@"ISO (%lu) value: %f", property, value);
+//                                //NSLog(@"ISO (%lu) value: %f", property, value);
                             }];
                             [self setISO:self.videoDevice.ISO];
                             [self didChangeValueForKey:@"ISO"];
@@ -548,7 +548,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                         [self->_videoDevice setTorchMode:AVCaptureTorchModeOff];
                     
                     [self didChangeValueForKey:@"videoDevice.torchLevel"];
-                    NSLog(@"Torch level (%lu) value: %f", property, value);
+//                    //NSLog(@"Torch level (%lu) value: %f", property, value);
                 } else if (property == CameraPropertyVideoZoomFactor) {
                     [self willChangeValueForKey:@"videoZoomFactor"];
                     if (![self.videoDevice isRampingVideoZoom]) {
@@ -559,7 +559,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                         //                        zoomValue = 1.0 + (zoomValue * (self.videoDevice.activeFormat.videoMaxZoomFactor - 1.0));
                         [self.videoDevice setVideoZoomFactor:zoomValue];
                         [self didChangeValueForKey:@"videoZoomFactor"];
-                        NSLog(@"Video zoom factor (%lu) value: %f (min: %f\tmax: %f)", property, value, minZoom, maxZoom);
+//                        //NSLog(@"Video zoom factor (%lu) value: %f (min: %f\tmax: %f)", property, value, minZoom, maxZoom);
                     }
                 } else if (property == CameraPropertyExposureDuration) {
                     [self willChangeValueForKey:@"videoDevice.exposureDuration"];
@@ -568,7 +568,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                     double maxDurationSeconds = CMTimeGetSeconds(self.videoDevice.activeFormat.maxExposureDuration);
                     // Map from duration to non-linear UI range 0-1
                     float exposureDuration = minDurationSeconds + (value * (maxDurationSeconds - minDurationSeconds));
-                    NSLog(@"Exposure duration factor (%lu) value: %f", property, value);
+//                    //NSLog(@"Exposure duration factor (%lu) value: %f", property, value);
                     double currentExposureDurationTimeScale = self.videoDevice.exposureDuration.timescale;
                     CMTime newExposureDuration = CMTimeMakeWithSeconds( exposureDuration, currentExposureDurationTimeScale);
                     [self.videoDevice setExposureModeCustomWithDuration:newExposureDuration ISO:AVCaptureISOCurrent completionHandler:^(CMTime syncTime) {
@@ -576,10 +576,10 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                     }];
                     }
                 } else {
-                    NSLog(@"Value (%lu): %f", property, value);
+//                    //NSLog(@"Value (%lu): %f", property, value);
                 }
             } @catch (NSException *exception) {
-                NSLog( @"Error configuring device:\t%@", exception.description);
+                //NSLog( @"Error configuring device:\t%@", exception.description);
             } @finally {
                 
             }
@@ -595,7 +595,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 //        @try {
 //            [self.videoDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds( (1.0/3.0), 1000*1000*1000 ) ISO:([self.torchButton isSelected]) ? self.videoDevice.activeFormat.maxISO : self.videoDevice.activeFormat.minISO completionHandler:nil];
 //        } @catch (NSException *exception) {
-//            NSLog( @"Exposure mode AVCaptureExposureModeCustom is not supported.");
+//            //NSLog( @"Exposure mode AVCaptureExposureModeCustom is not supported.");
 //        } @finally {
 //
 //        }
@@ -603,7 +603,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 //        [self.videoDevice unlockForConfiguration];
 //    }
 //    else {
-//        NSLog( @"Could not lock device for configuration: %@", error );
+//        //NSLog( @"Could not lock device for configuration: %@", error );
 //    }
 //}
 
@@ -617,7 +617,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 //            else
 //                [self.videoDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds( (1.0/3.0), 1000*1000*1000 ) ISO:(self.ISO < self.videoDevice.activeFormat.minISO) ? self.videoDevice.activeFormat.minISO : self.ISO completionHandler:nil];
 //        } @catch (NSException *exception) {
-//            NSLog( @"Error setting exposure mode to AVCaptureExposureModeCustom:\t%@\n%@.", error.description, exception.description);
+//            //NSLog( @"Error setting exposure mode to AVCaptureExposureModeCustom:\t%@\n%@.", error.description, exception.description);
 //        } @finally {
 //
 //        }
@@ -625,7 +625,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 //        [self.videoDevice unlockForConfiguration];
 //    }
 //    else {
-//        NSLog( @"Could not lock device for configuration: %@", error );
+//        //NSLog( @"Could not lock device for configuration: %@", error );
 //    }
 //}
 
@@ -633,7 +633,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 
 - (void)toggleRecordingWithCompletionHandler:(void (^)(BOOL isRunning, NSError *error))completionHandler
 {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    //NSLog(@"%s", __PRETTY_FUNCTION__);
     // Retrieve the video preview layer's video orientation on the main queue before entering the session queue. We do this to ensure UI
     // elements are accessed on the main thread and session configuration is done on the session queue.
     AVCaptureVideoPreviewLayer *previewLayer = (AVCaptureVideoPreviewLayer *)self.cameraView.layer;
@@ -674,7 +674,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections
 {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    //NSLog(@"%s", __PRETTY_FUNCTION__);
     // Enable the Record button to let the user stop the recording
     dispatch_async( dispatch_get_main_queue(), ^{
         //[self.recordButton setImage:[[UIImage systemImageNamed:@"stop.circle.fill"] imageWithTintColor:[UIColor whiteColor]] forState:UIControlStateNormal];
@@ -704,7 +704,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
     BOOL success = YES;
     
     if ( error ) {
-        NSLog( @"Error occurred while capturing movie: %@", error );
+        //NSLog( @"Error occurred while capturing movie: %@", error );
         success = [error.userInfo[AVErrorRecordingSuccessfullyFinishedKey] boolValue];
     }
     if ( success ) {
@@ -721,7 +721,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                     [changeRequest addResourceWithType:PHAssetResourceTypeVideo fileURL:outputFileURL options:options];
                 } completionHandler:^( BOOL success, NSError *error ) {
                     if ( ! success ) {
-                        NSLog( @"Could not save movie to photo library: %@", error );
+                        //NSLog( @"Could not save movie to photo library: %@", error );
                     }
                     cleanup();
                 }];
@@ -815,7 +815,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 //- (void)sessionRuntimeError:(NSNotification *)notification
 //{
 //    NSError *error = notification.userInfo[AVCaptureSessionErrorKey];
-//    NSLog( @"Capture session runtime error: %@", error );
+//    //NSLog( @"Capture session runtime error: %@", error );
 //
 //    if ( error.code == AVErrorMediaServicesWereReset ) {
 //        dispatch_async( self.sessionQueue, ^{
@@ -845,7 +845,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 //    // Also note that it is not always possible to resume, see -[resumeInterruptedSession:].
 //    // In iOS 9 and later, the notification's userInfo dictionary contains information about why the session was interrupted
 //    AVCaptureSessionInterruptionReason reason = [notification.userInfo[AVCaptureSessionInterruptionReasonKey] integerValue];
-//    NSLog( @"Capture session was interrupted with reason %ld", (long)reason );
+//    //NSLog( @"Capture session was interrupted with reason %ld", (long)reason );
 //
 //    if ( reason == AVCaptureSessionInterruptionReasonAudioDeviceInUseByAnotherClient ||
 //        reason == AVCaptureSessionInterruptionReasonVideoDeviceInUseByAnotherClient ) {
@@ -868,7 +868,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 
 //- (void)sessionInterruptionEnded:(NSNotification *)notification
 //{
-//    NSLog( @"Capture session interruption ended" );
+//    //NSLog( @"Capture session interruption ended" );
 //
 //    //    if ( ! self.resumeButton.hidden ) {
 //    //        [UIView animateWithDuration:0.25 animations:^{
@@ -915,7 +915,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
         {
             float zoomFactor = [self.videoDevice videoZoomFactor];
             value = (1.0 - 0.0) * (zoomFactor - [self.videoDevice minAvailableVideoZoomFactor]) / (self.videoDevice.activeFormat.videoMaxZoomFactor - [self.videoDevice minAvailableVideoZoomFactor]) + 0.0;
-            NSLog(@"zoomFactor:  %f", self.videoDevice.activeFormat.videoMaxZoomFactor);
+//            //NSLog(@"zoomFactor:  %f", self.videoDevice.activeFormat.videoMaxZoomFactor);
             
             break;
         }
@@ -946,7 +946,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 //            }
 //        }
 //    } @catch (NSException *exception) {
-//        NSLog( @"Error setting exposure mode to AVCaptureExposureModeCustom:\t%@\n%@.", error.description, exception.description);
+//        //NSLog( @"Error setting exposure mode to AVCaptureExposureModeCustom:\t%@\n%@.", error.description, exception.description);
 //    } @finally {
 //        [self unlockDevice];
 //        completionHandler([self.videoDevice exposureDuration]);
@@ -955,14 +955,14 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 
 - (void)autoFocusWithCompletionHandler:(void (^)(double focus))completionHandler
 {
-    //    NSLog(@"%s", __PRETTY_FUNCTION__);
+    //    //NSLog(@"%s", __PRETTY_FUNCTION__);
     __autoreleasing NSError *error;
     @try {
         if (![self.videoDevice isAdjustingFocus] && [self.videoDevice lockForConfiguration:&error]) {
             [self.videoDevice setFocusMode:AVCaptureFocusModeAutoFocus];
         }
     } @catch (NSException *exception) {
-        NSLog( @"ERROR auto-focusing:%@\t%@", exception.description, error.description);
+        //NSLog( @"ERROR auto-focusing:%@\t%@", exception.description, error.description);
     } @finally {
         [self lockDevice];
         //            while ([self.videoDevice isAdjustingFocus]) {
@@ -975,14 +975,14 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 - (void)autoExposureWithCompletionHandler:(void (^)(double ISO))completionHandler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        //                        NSLog(@"BLOCK IS WAITING");
+        //                        //NSLog(@"BLOCK IS WAITING");
         dispatch_semaphore_wait([self device_lock_semaphore], DISPATCH_TIME_FOREVER);
-        //                            NSLog(@"BLOCK IS SIGNALED");
+        //                            //NSLog(@"BLOCK IS SIGNALED");
         if (![self.videoDevice isAdjustingExposure]) {
             @try {
                 [self.videoDevice setExposureMode:AVCaptureExposureModeAutoExpose];
             } @catch (NSException *exception) {
-                NSLog( @"ERROR auto-focusing:\t%@", exception.description);
+                //NSLog( @"ERROR auto-focusing:\t%@", exception.description);
             } @finally {
                 while ([self.videoDevice isAdjustingExposure]) {
 
@@ -991,7 +991,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                 [self lockDevice];
             }
         } else {
-            NSLog( @"Could not lock device for focus configuration: %@", nil );
+            //NSLog( @"Could not lock device for focus configuration: %@", nil );
         }
         dispatch_semaphore_signal([self device_lock_semaphore]);
     });
@@ -1008,8 +1008,8 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 //            completionHandler(!isTorchActive);
 //        }
 //    } @catch (NSException *exception) {
-//        NSLog(@"Error setting torch level/mode:\t%@", exception.description);
-//        NSLog(@"AVCaptureDevice lockForConfiguration returned error\t%@", error.description);
+//        //NSLog(@"Error setting torch level/mode:\t%@", exception.description);
+//        //NSLog(@"AVCaptureDevice lockForConfiguration returned error\t%@", error.description);
 //    } @finally {
 ////        [self unlockDevice];
 //    }

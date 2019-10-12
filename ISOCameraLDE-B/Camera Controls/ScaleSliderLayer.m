@@ -22,7 +22,7 @@
 
 - (void)drawInContext:(CGContextRef)ctx
 {
-//    NSLog(@"%s", __PRETTY_FUNCTION__);
+//    //NSLog(@"%s", __PRETTY_FUNCTION__);
     CGRect bounds = [self bounds];
     CGContextTranslateCTM(ctx, CGRectGetMinX(bounds), CGRectGetMinY(bounds));
 

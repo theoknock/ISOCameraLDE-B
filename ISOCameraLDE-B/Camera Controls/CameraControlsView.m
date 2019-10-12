@@ -126,10 +126,10 @@ float normalize(float unscaledNum, float minAllowed, float maxAllowed, float min
     if (!(cameraProperty > 0) && !(cameraProperty < 7))
     {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-        NSLog(@"Something else observed.");
+        //NSLog(@"Something else observed.");
     }
 
-    NSLog(@"Context: %lu", cameraProperty);
+    //NSLog(@"Context: %lu", cameraProperty);
     [self displayValuesForCameraControlProperties];
 }
 
@@ -226,7 +226,7 @@ float normalize(float unscaledNum, float minAllowed, float maxAllowed, float min
 //                [self.cameraControlButtonsStackView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
 //                    if ([obj isKindOfClass:[UIButton class]])
 //                    {
-////                        NSLog(@"button %lu", [obj tag]);
+////                        //NSLog(@"button %lu", [obj tag]);
 //                        UIImage *large_symbol = [[(UIButton *)obj currentImage] imageByApplyingSymbolConfiguration:[UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleLargeTitle]];
 //                        [(UIButton *)obj setImage:large_symbol forState:UIControlStateNormal];
 //                        [self setMeasuringUnit:[NSString stringWithFormat:@"%@", @""]];
@@ -235,7 +235,7 @@ float normalize(float unscaledNum, float minAllowed, float maxAllowed, float min
 //                    [self cameraControlAction:(UIButton *)[self viewWithTag:[self selectedCameraProperty]]];
 //            } else {
 //                float value = [self.delegate valueForCameraProperty:[self selectedCameraProperty]];
-//                NSLog(@"Value out: %f", value);
+//                //NSLog(@"Value out: %f", value);
 ////                CGRect scrollRect = CGRectMake(-CGRectGetMidX(self.scaleSliderScrollView.frame) + (CGRectGetWidth(self.scaleSliderScrollView.frame) * value), self.scaleSliderScrollView.frame.origin.y, (CGRectGetMaxX(self.scaleSliderScrollView.frame)) + fabs(CGRectGetMidX(self.scaleSliderScrollView.frame)),  CGRectGetHeight(self.scaleSliderScrollView.frame));
 //                [self.scaleSliderScrollView setContentOffset:CGPointMake(-CGRectGetMidX(self.scaleSliderScrollView.frame) + (self.scaleSliderScrollView.contentSize.width * value), 0.0) animated:TRUE];//  scrollRectToVisible:scrollRect animated:FALSE];
 //                [self setMeasuringUnit:[[self numberFormatter] stringFromNumber:[NSNumber numberWithFloat:(value * 10)]]];
@@ -253,12 +253,12 @@ float normalize(float unscaledNum, float minAllowed, float maxAllowed, float min
     //
     //        if ([[touch view] isKindOfClass:[UIButton class]])
     //        {
-    //            NSLog(@"UIButton tapped");
+    //            //NSLog(@"UIButton tapped");
     //        }
     //
     //        return isTapGesture;
     //    }];
-    //    NSLog(@"Index %lu", index);
+    //    //NSLog(@"Index %lu", index);
     //    return (index != NSNotFound) ? TRUE : FALSE;
     return TRUE;
 }
@@ -334,7 +334,7 @@ static float(^scaleSliderValue)(CGRect, CGFloat, float, float) = ^float(CGRect s
         {
             float value = scaleSliderValue(scrollView.frame, scrollView.contentOffset.x, 0.0, 1.0);
             CameraProperty cameraProperty = [self selectedCameraProperty];
-            if (cameraProperty == CameraPropertyISO) NSLog(@"ISO %f", value);
+//            if (cameraProperty == CameraPropertyISO) //NSLog(@"ISO %f", value);
             self->setCameraPropertyValueBlock(cameraProperty, value);
             [self setValue:value forCameraControlProperty:cameraProperty];
             [(UIButton *)[self viewWithTag:cameraProperty] setTintColor:[UIColor systemRedColor]];
@@ -354,14 +354,14 @@ static float(^scaleSliderValue)(CGRect, CGFloat, float, float) = ^float(CGRect s
         *stop = [obj isSelected];
         return [obj isSelected];
     }];
-    NSLog(@"index %lu", index);
+//    //NSLog(@"index %lu", index);
     CameraProperty cameraProperty = (index != NSNotFound) ? (CameraProperty)[[self.cameraPropertyButtons objectAtIndex:index] tag] : NSNotFound;
     
     return cameraProperty;
 }
 
 //- (void)handleTapGesture:(UITapGestureRecognizer *)sender {
-//    //    NSLog(@"%s", __PRETTY_FUNCTION__);
+//    //    //NSLog(@"%s", __PRETTY_FUNCTION__);
 //    dispatch_async(dispatch_get_main_queue(), ^{
 //        //        CGRect scrollRect = ((UICollectionView *)[self viewWithTag:6]).frame;
 //        if ([(UIButton *)[self viewWithTag:ControlButtonTagFocus] isSelected])
@@ -381,7 +381,7 @@ static float(^scaleSliderValue)(CGRect, CGFloat, float, float) = ^float(CGRect s
 //}
 
 - (id)forwardingTargetForSelector:(SEL)aSelector {
-    //    NSLog(@"forwardingTargetForSelector");
+    //    //NSLog(@"forwardingTargetForSelector");
     return self.delegate;
 }
 
@@ -440,7 +440,7 @@ static CMTime (^exposureDurationForMode)(ExposureDurationMode) = ^CMTime(Exposur
         CameraProperty selectedButtonCameraProperty = [self selectedCameraProperty];
         CameraProperty senderButtonCameraProperty = (CameraProperty)[sender tag];
         BOOL cameraPropertiesIdentical = (senderButtonCameraProperty == selectedButtonCameraProperty) ? TRUE : FALSE;
-        NSLog(@"cameraProperty %@ cameraPropertyButtons", ((selectedButtonCameraProperty < self.cameraPropertyButtons.count) ? @"<" : @">"));
+//        //NSLog(@"cameraProperty %@ cameraPropertyButtons", ((selectedButtonCameraProperty < self.cameraPropertyButtons.count) ? @"<" : @">"));
         [self deselectCameraControlButtonForCameraProperty:selectedButtonCameraProperty];
         [self selectCameraControlButtonForCameraProperty:(cameraPropertiesIdentical) ? nil : senderButtonCameraProperty];
             //    dispatch_async(dispatch_get_main_queue(), ^{
@@ -462,7 +462,7 @@ static CMTime (^exposureDurationForMode)(ExposureDurationMode) = ^CMTime(Exposur
             //                    float value = [self.delegate valueForCameraProperty:(CameraProperty)[(UIButton *)obj tag]];
             //                    [self.scaleSliderScrollView setContentOffset:CGPointMake(-CGRectGetMidX(self.scaleSliderScrollView.frame) + (self.scaleSliderScrollView.contentSize.width * value), 0.0) animated:TRUE];//  scrollRectToVisible:scrollRect animated:FALSE];
             //                    [self setMeasuringUnit:[[self numberFormatter] stringFromNumber:[NSNumber numberWithFloat:(value * 10)]]];
-            //                    //                    NSLog(@"origin x (1): %f", ((UIButton *)obj).frame.origin.x);
+            //                    //                    //NSLog(@"origin x (1): %f", ((UIButton *)obj).frame.origin.x);
             //                }
             //            });
             //        }];
@@ -620,7 +620,7 @@ double (cameraPropertyFunc)(id<CameraControlsDelegate> delegate, CameraProperty 
                                                     CGRectGetHeight((CGRect)[(UIButton *)[self viewWithTag:[self selectedCameraProperty]] frame]));*/
     
     NSValue *selectedCameraPropertyValue = [NSValue valueWithCGRect:cameraControlButtonRect];
-    //    NSLog(@"selectedCameraPropertyFrame (2): %f", selectedCameraPropertyFrame.origin.x);
+    //    //NSLog(@"selectedCameraPropertyFrame (2): %f", selectedCameraPropertyFrame.origin.x);
     
     return selectedCameraPropertyValue;
 }

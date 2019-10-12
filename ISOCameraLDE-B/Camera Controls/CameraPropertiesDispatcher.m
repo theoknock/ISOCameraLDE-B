@@ -65,7 +65,7 @@ NSInteger productionCount;
                 if (value != NULL)
                 {
                     // Use value here
-                    NSLog(@"Camera property changes source data (value): %f", *value);
+                    //NSLog(@"Camera property changes source data (value): %f", *value);
                     // Free when finished
                     free((void *)value);
                 }
