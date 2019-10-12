@@ -58,7 +58,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 
 @implementation CameraViewController
 
-@synthesize videoZoomFactor = _videoZoomFactor;
+@synthesize videoZoomFactor = _videoZoomFactor, ISO = _ISO;
 
 - (void)setVideoZoomFactor:(float)videoZoomFactor
 {
@@ -75,6 +75,15 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 //    return [NSSet setWithObject:@"videoZoomFactor"];
 //}
 
+- (void)setISO:(float)ISO
+{
+    self->_ISO = ISO;
+}
+
+- (float)ISO
+{
+    return self->_ISO;
+}
 
 #pragma mark View Controller Life Cycle
 
@@ -224,7 +233,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
                 // Only setup observers and start the session running if setup succeeded
                 //                [self addObservers];
                 [self.session startRunning];
-//                self.sessionRunning = self.session.isRunning;
+                //                self.sessionRunning = self.session.isRunning;
                 if (self.session.isRunning)
                 {
                     [self lockDevice];
@@ -379,7 +388,7 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
         // To avoid repeatedly failing to start the session running, we only try to restart the session in the
         // session runtime error handler if we aren't trying to resume the session running.
         [self.session startRunning];
-//        self.sessionRunning = self.session.isRunning;
+        //        self.sessionRunning = self.session.isRunning;
         if ( ! self.session.isRunning ) {
             dispatch_async( dispatch_get_main_queue(), ^{
                 NSString *message = NSLocalizedString( @"Unable to resume", @"Alert message when unable to resume the session running" );
@@ -440,22 +449,22 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
-        [self.videoDevice unlockForConfiguration];
-
-        dispatch_async([self device_configuration_queue], ^{
-            dispatch_semaphore_wait([self device_lock_semaphore], DISPATCH_TIME_FOREVER);
-            __autoreleasing NSError *error = nil;
-            @try {
-                if ([self.videoDevice lockForConfiguration:&error])
-                {
-                    dispatch_semaphore_signal([self device_lock_semaphore]);
-                }
-            } @catch (NSException *exception) {
-                NSLog( @"Could not lock device for configuration: %@\t%@", exception.description, error.description);
-            } @finally {
-
+    [self.videoDevice unlockForConfiguration];
+    
+    dispatch_async([self device_configuration_queue], ^{
+        dispatch_semaphore_wait([self device_lock_semaphore], DISPATCH_TIME_FOREVER);
+        __autoreleasing NSError *error = nil;
+        @try {
+            if ([self.videoDevice lockForConfiguration:&error])
+            {
+                dispatch_semaphore_signal([self device_lock_semaphore]);
             }
-        });
+        } @catch (NSException *exception) {
+            NSLog( @"Could not lock device for configuration: %@\t%@", exception.description, error.description);
+        } @finally {
+            
+        }
+    });
 }
 
 // Adds a block to a serial queue on an asynchronous thread, which allows subsequent blocks to be added in order to the same queue prior to its execution;
@@ -463,34 +472,34 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 // After queueing the block, a signal semaphore resumes execution of the block in the previous method; that block then signals the waiting semaphore in thie block
 - (void)configureCameraForHighestFrameRateWithCompletionHandler:(void (^)(NSString *error_description))completionHandler
 {
-        dispatch_async([self device_configuration_queue], ^{
-            NSLog(@"%s", __PRETTY_FUNCTION__);
-            dispatch_semaphore_wait([self device_lock_semaphore], DISPATCH_TIME_FOREVER);
-            AVCaptureDeviceFormat *bestFormat = nil;
-            AVFrameRateRange *bestFrameRateRange = nil;
-            for ( AVCaptureDeviceFormat *format in [self.videoDevice formats] ) {
-                for ( AVFrameRateRange *range in format.videoSupportedFrameRateRanges ) {
-                    if ( range.maxFrameRate > bestFrameRateRange.maxFrameRate ) {
-                        bestFormat = format;
-                        bestFrameRateRange = range;
-                    }
+    dispatch_async([self device_configuration_queue], ^{
+        NSLog(@"%s", __PRETTY_FUNCTION__);
+        dispatch_semaphore_wait([self device_lock_semaphore], DISPATCH_TIME_FOREVER);
+        AVCaptureDeviceFormat *bestFormat = nil;
+        AVFrameRateRange *bestFrameRateRange = nil;
+        for ( AVCaptureDeviceFormat *format in [self.videoDevice formats] ) {
+            for ( AVFrameRateRange *range in format.videoSupportedFrameRateRanges ) {
+                if ( range.maxFrameRate > bestFrameRateRange.maxFrameRate ) {
+                    bestFormat = format;
+                    bestFrameRateRange = range;
                 }
             }
-            if ( bestFormat ) {
-                
-                @try {
-                    self.videoDevice.activeFormat = bestFormat;
-                    self.videoDevice.activeVideoMinFrameDuration = bestFrameRateRange.minFrameDuration;
-                    self.videoDevice.activeVideoMaxFrameDuration = bestFrameRateRange.minFrameDuration;
-                } @catch (NSException *exception) {
-                    if (exception) completionHandler(exception.description);
-                } @finally {
-//                    [self lockDevice];
-                }
+        }
+        if ( bestFormat ) {
+            
+            @try {
+                self.videoDevice.activeFormat = bestFormat;
+                self.videoDevice.activeVideoMinFrameDuration = bestFrameRateRange.minFrameDuration;
+                self.videoDevice.activeVideoMaxFrameDuration = bestFrameRateRange.minFrameDuration;
+            } @catch (NSException *exception) {
+                if (exception) completionHandler(exception.description);
+            } @finally {
+                //                    [self lockDevice];
             }
-        });
+        }
+    });
     dispatch_semaphore_signal([self device_lock_semaphore]);
- 
+    
 }
 
 // TO-DO:
@@ -498,62 +507,79 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
 {
     return ^void(CameraProperty property, float value)
     {
-            dispatch_async([self device_configuration_queue], ^{
-                dispatch_semaphore_wait([self device_lock_semaphore], DISPATCH_TIME_FOREVER);
-                @try {
-                    if ( property == CameraPropertyLensPosition && ![self.videoDevice isAdjustingFocus]) {
+        dispatch_async([self device_configuration_queue], ^{
+            dispatch_semaphore_wait([self device_lock_semaphore], DISPATCH_TIME_FOREVER);
+            @try {
+                if ( property == CameraPropertyLensPosition) {
+                    [self willChangeValueForKey:@"videoDevice.lensPosition"];
+                    if (![self.videoDevice isAdjustingFocus]) {
                         [self.videoDevice setFocusModeLockedWithLensPosition:value completionHandler:^(CMTime syncTime) {
                             NSLog(@"Lens position (%lu) value: %f", property, value);
-                        }];
-                    } else if (property == CameraPropertyISO && ![self.videoDevice isAdjustingExposure]) {
-                        float maxISO = self.videoDevice.activeFormat.maxISO;
-                        float minISO = self.videoDevice.activeFormat.minISO;
-                        float ISO = minISO + (value * (maxISO - minISO));
-                        ISO = ((ISO > minISO) && (ISO < maxISO)) ? ISO : self.videoDevice.ISO;
-                        ISO = (1.0 - 0.0) * (ISO - minISO) / (maxISO - minISO) + 0.0;
-                        [self.videoDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:ISO completionHandler:^(CMTime syncTime) {
-                            NSLog(@"ISO (%lu) value: %f", property, value);
-                        }];
-                    } else if (property == CameraPropertyTorchLevel && ([[NSProcessInfo processInfo] thermalState] != NSProcessInfoThermalStateCritical && [[NSProcessInfo processInfo] thermalState] != NSProcessInfoThermalStateSerious)) {
-                        if (value != 0)
-                            [self->_videoDevice setTorchModeOnWithLevel:value error:nil];
-                        else
-                            [self->_videoDevice setTorchMode:AVCaptureTorchModeOff];
-                        NSLog(@"Torch level (%lu) value: %f", property, value);
-                    } else if (property == CameraPropertyVideoZoomFactor && ![self.videoDevice isRampingVideoZoom]) {
-                        float maxZoom = self.videoDevice.maxAvailableVideoZoomFactor; // self.videoDevice.activeFormat.videoMaxZoomFactor;
-                        float minZoom = self.videoDevice.minAvailableVideoZoomFactor;
-                        [self willChangeValueForKey:@"videoZoomFactor"];
-                        float zoomValue = minZoom + (pow(value, 5.0) * (maxZoom - minZoom));
-                        zoomValue = (zoomValue < minZoom) ? minZoom : (zoomValue > maxZoom) ? maxZoom : zoomValue;
-//                        zoomValue = 1.0 + (zoomValue * (self.videoDevice.activeFormat.videoMaxZoomFactor - 1.0));
-                        [self willChangeValueForKey:@"videoZoomFactor"];
-                        NSLog(@"Video zoom factor (%lu) value: %f (min: %f\tmax: %f)", property, value, minZoom, maxZoom);
-                        [self.videoDevice setVideoZoomFactor:zoomValue];
-                    } else if (property == CameraPropertyExposureDuration && ![self.videoDevice isAdjustingExposure]) {
-                        double minDurationSeconds = CMTimeGetSeconds(self.videoDevice.activeFormat.minExposureDuration);
-                        double maxDurationSeconds = CMTimeGetSeconds(self.videoDevice.activeFormat.maxExposureDuration);
-                        // Map from duration to non-linear UI range 0-1
-                        float exposureDuration = minDurationSeconds + (value * (maxDurationSeconds - minDurationSeconds));
-                        NSLog(@"Exposure duration factor (%lu) value: %f", property, value);
-                        double currentExposureDurationTimeScale = self.videoDevice.exposureDuration.timescale;
-                        CMTime newExposureDuration = CMTimeMakeWithSeconds( exposureDuration, currentExposureDurationTimeScale);
-                        [self.videoDevice setExposureModeCustomWithDuration:newExposureDuration ISO:AVCaptureISOCurrent completionHandler:^(CMTime syncTime) {
                             
                         }];
-                    } else {
-                        NSLog(@"Value (%lu): %f", property, value);
+                        [self didChangeValueForKey:@"videoDevice.lensPosition"];
                     }
+                } else if (property == CameraPropertyISO) {
+                    if ([self.videoDevice isAdjustingFocus]) {
+                        [self willChangeValueForKey:@"ISO"];
+                    } else
+                        if (![self.videoDevice isAdjustingExposure]) {
+                            float maxISO = self.videoDevice.activeFormat.maxISO;
+                            float minISO = self.videoDevice.activeFormat.minISO;
+                            float ISO = minISO + (value * (maxISO - minISO));
+                            ISO = ((ISO > minISO) && (ISO < maxISO)) ? ISO : self.videoDevice.ISO;
+                            ISO = (1.0 - 0.0) * (ISO - minISO) / (maxISO - minISO) + 0.0;
+                            [self.videoDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:ISO completionHandler:^(CMTime syncTime) {
+                                NSLog(@"ISO (%lu) value: %f", property, value);
+                            }];
+                            [self didChangeValueForKey:@"ISO"];
+                        }
                     
-                    if (property == CameraPropertyLensPosition && [self.videoDevice isAdjustingFocus]) {
-//                        [
+                    
+                } else if (property == CameraPropertyTorchLevel && ([[NSProcessInfo processInfo] thermalState] != NSProcessInfoThermalStateCritical && [[NSProcessInfo processInfo] thermalState] != NSProcessInfoThermalStateSerious)) {
+                    [self willChangeValueForKey:@"videoDevice.torchLevel"];
+                    if (value != 0)
+                        [self->_videoDevice setTorchModeOnWithLevel:value error:nil];
+                    else
+                        [self->_videoDevice setTorchMode:AVCaptureTorchModeOff];
+                    
+                    [self didChangeValueForKey:@"videoDevice.torchLevel"];
+                    NSLog(@"Torch level (%lu) value: %f", property, value);
+                } else if (property == CameraPropertyVideoZoomFactor) {
+                    [self willChangeValueForKey:@"videoZoomFactor"];
+                    if (![self.videoDevice isRampingVideoZoom]) {
+                        float maxZoom = self.videoDevice.maxAvailableVideoZoomFactor; // self.videoDevice.activeFormat.videoMaxZoomFactor;
+                        float minZoom = self.videoDevice.minAvailableVideoZoomFactor;
+                        float zoomValue = minZoom + (pow(value, 5.0) * (maxZoom - minZoom));
+                        zoomValue = (zoomValue < minZoom) ? minZoom : (zoomValue > maxZoom) ? maxZoom : zoomValue;
+                        //                        zoomValue = 1.0 + (zoomValue * (self.videoDevice.activeFormat.videoMaxZoomFactor - 1.0));
+                        [self.videoDevice setVideoZoomFactor:zoomValue];
+                        [self didChangeValueForKey:@"videoZoomFactor"];
+                        NSLog(@"Video zoom factor (%lu) value: %f (min: %f\tmax: %f)", property, value, minZoom, maxZoom);
                     }
-                } @catch (NSException *exception) {
-                    NSLog( @"Error configuring device:\t%@", exception.description);
-                } @finally {
-                    
+                } else if (property == CameraPropertyExposureDuration) {
+                    [self willChangeValueForKey:@"videoDevice.exposureDuration"];
+                    if (![self.videoDevice isAdjustingExposure]) {
+                    double minDurationSeconds = CMTimeGetSeconds(self.videoDevice.activeFormat.minExposureDuration);
+                    double maxDurationSeconds = CMTimeGetSeconds(self.videoDevice.activeFormat.maxExposureDuration);
+                    // Map from duration to non-linear UI range 0-1
+                    float exposureDuration = minDurationSeconds + (value * (maxDurationSeconds - minDurationSeconds));
+                    NSLog(@"Exposure duration factor (%lu) value: %f", property, value);
+                    double currentExposureDurationTimeScale = self.videoDevice.exposureDuration.timescale;
+                    CMTime newExposureDuration = CMTimeMakeWithSeconds( exposureDuration, currentExposureDurationTimeScale);
+                    [self.videoDevice setExposureModeCustomWithDuration:newExposureDuration ISO:AVCaptureISOCurrent completionHandler:^(CMTime syncTime) {
+                        [self didChangeValueForKey:@"videoDevice.exposureDuration"];
+                    }];
+                    }
+                } else {
+                    NSLog(@"Value (%lu): %f", property, value);
                 }
-            }); dispatch_semaphore_signal([self device_lock_semaphore]);
+            } @catch (NSException *exception) {
+                NSLog( @"Error configuring device:\t%@", exception.description);
+            } @finally {
+                
+            }
+        }); dispatch_semaphore_signal([self device_lock_semaphore]);
     };
 }
 
@@ -862,10 +888,10 @@ typedef NS_ENUM( NSInteger, AVCamManualSetupResult ) {
     switch (cameraProperty) {
         case CameraPropertyISO:
         {
-//            float ISO = self.videoDevice.ISO;
+            //            float ISO = self.videoDevice.ISO;
             float maxISO = self.videoDevice.activeFormat.maxISO;
             float minISO = self.videoDevice.activeFormat.minISO;
-//            ISO = ((ISO > minISO) && (ISO < maxISO)) ? ISO : ((maxISO - minISO) / 2.0);
+            //            ISO = ((ISO > minISO) && (ISO < maxISO)) ? ISO : ((maxISO - minISO) / 2.0);
             value = (maxISO - minISO) / 2.0;//  (1.0 - 0.0) * (self.videoDevice.ISO - minISO) / (maxISO - minISO) + 0.0;
             break;
         }

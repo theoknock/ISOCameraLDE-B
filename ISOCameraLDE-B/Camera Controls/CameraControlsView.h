@@ -30,6 +30,7 @@ typedef void (^SetCameraPropertyValueBlock)(CameraProperty property, float value
 @required
 
 @property (nonatomic, getter=videoZoomFactor, setter=setVideoZoomFactor:) float videoZoomFactor;
+@property (nonatomic, getter=ISO, setter=setISO:) float ISO;
 
 @property (nonatomic) AVCaptureDevice * _Nonnull videoDevice;
 

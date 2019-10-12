@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (float)valueForCameraProperty:(CameraProperty)cameraProperty;
 
 @property (nonatomic, getter=videoZoomFactor, setter=setVideoZoomFactor:) float videoZoomFactor;
+@property (nonatomic, getter=ISO, setter=setISO:) float ISO;
 
 @end
 

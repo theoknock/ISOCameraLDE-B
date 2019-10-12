@@ -38,7 +38,7 @@ static NSString * const ExposureDurationContext = @"2";
 //    setCameraPropertyValueBlock = [_delegate setCameraProperty:[self selectedCameraProperty]];
 //    [self addObserver:self forKeyPath:@"delegate.session.running" options:NSKeyValueObservingOptionNew context:SessionRunningContext];
     [self addObserver:self forKeyPath:@"delegate.videoDevice.lensPosition" options:NSKeyValueObservingOptionNew context:CFBridgingRetain(LensPositionContext)];
-    [self addObserver:self forKeyPath:@"delegate.videoDevice.ISO" options:NSKeyValueObservingOptionNew context:CFBridgingRetain(ISOContext)];
+    [self addObserver:self forKeyPath:@"delegate.ISO" options:NSKeyValueObservingOptionNew context:CFBridgingRetain(ISOContext)];
     [self addObserver:self forKeyPath:@"delegate.videoDevice.torchLevel" options:NSKeyValueObservingOptionNew context:CFBridgingRetain(TorchContext)];
     [self addObserver:self forKeyPath:@"delegate.videoZoomFactor" options:NSKeyValueObservingOptionNew context:CFBridgingRetain(VideoZoomFactorContext)];
     [self addObserver:self forKeyPath:@"delegate.videoDevice.exposureDuration" options:NSKeyValueObservingOptionNew context:(__bridge void * _Nullable)(ExposureDurationContext)];
@@ -90,6 +90,9 @@ float normalize(float unscaledNum, float minAllowed, float maxAllowed, float min
 {
     __block UIButton *button;
     CameraProperty cameraProperty = (CameraProperty)[[self cameraPropertyNumberFormatter] numberFromString:(__bridge NSString * _Nonnull)(context)];
+    dispatch_async( dispatch_get_main_queue(), ^{
+        button = (UIButton *)[self viewWithTag:cameraProperty];
+    });
 //    if (cameraProperty == CameraPropertyLensPosition || cameraProperty == CameraPropertyTorchLevel || cameraProperty == CameraPropertyVideoZoomFactor) {
         id newValue = change[NSKeyValueChangeNewKey];
             if ( newValue && newValue != [NSNull null] ) {
@@ -111,38 +114,15 @@ float normalize(float unscaledNum, float minAllowed, float maxAllowed, float min
                     }
                 }
                 dispatch_async( dispatch_get_main_queue(), ^{
-                    button = (UIButton *)[self viewWithTag:cameraProperty];
                     [button setTitle:[NSString stringWithFormat:@"%.1f", newFloatValue] forState:UIControlStateNormal];
                     [button setTintColor:[UIColor systemBlueColor]];
                 } );
         }
-//    if (cameraProperty == CameraPropertyISO) {
-//        id newValue = change[NSKeyValueChangeNewKey];
-//        if ( newValue && newValue != [NSNull null] ) {
-//            float newFloatValue = [newValue floatValue];
-//            float maxISO = self.delegate.videoDevice.activeFormat.maxISO;
-//            float minISO = self.delegate.videoDevice.activeFormat.minISO;
-//            newFloatValue = minISO + (newFloatValue * (maxISO - minISO));
-//            newFloatValue = normalize(newFloatValue, 0.0, 1.0, minISO, maxISO);
-//            dispatch_async( dispatch_get_main_queue(), ^{
-//                button = (UIButton *)[self viewWithTag:cameraProperty];
-//                [button setTitle:[NSString stringWithFormat:@"%.1f", newFloatValue] forState:UIControlStateNormal];
-//                [button setTintColor:[UIColor systemBlueColor]];
-//            } );
-//        }
-//    }
-//    if (cameraProperty == CameraPropertyExposureDuration) {
-//        id newValue = change[NSKeyValueChangeNewKey];
-//        if ( newValue && newValue != [NSNull null] ) {
-//            CMTime newExposureDuration = [newValue CMTimeValue];
-//            float newFloatValue = newExposureDuration.timescale;
-//            dispatch_async( dispatch_get_main_queue(), ^{
-//                button = (UIButton *)[self viewWithTag:cameraProperty];
-//                [button setTitle:[NSString stringWithFormat:@"%.1f", newFloatValue] forState:UIControlStateNormal];
-//                [button setTintColor:[UIColor systemBlueColor]];
-//            } );
-//        }
-//    } else {
+    
+    dispatch_async( dispatch_get_main_queue(), ^{
+        [button setTintColor:[UIColor systemBlueColor]];
+    } );
+
     if (!(cameraProperty > 0) && !(cameraProperty < 7))
     {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -357,7 +337,7 @@ static float(^scaleSliderValue)(CGRect, CGFloat, float, float) = ^float(CGRect s
             if (cameraProperty == CameraPropertyISO) NSLog(@"ISO %f", value);
             self->setCameraPropertyValueBlock(cameraProperty, value);
             [self setValue:value forCameraControlProperty:cameraProperty];
-            [(UIButton *)[self viewWithTag:cameraProperty] setTintColor:[UIColor systemGrayColor]];
+            [(UIButton *)[self viewWithTag:cameraProperty] setTintColor:[UIColor systemRedColor]];
         }
     });
 }
@@ -455,6 +435,7 @@ static CMTime (^exposureDurationForMode)(ExposureDurationMode) = ^CMTime(Exposur
 
 - (IBAction)cameraControlAction:(UIButton *)sender
 {
+    if (!self.scaleSliderScrollView.isDragging && !self.scaleSliderScrollView.isTracking && !self.scaleSliderScrollView.isDecelerating)
     dispatch_async(dispatch_get_main_queue(), ^{
         CameraProperty selectedButtonCameraProperty = [self selectedCameraProperty];
         CameraProperty senderButtonCameraProperty = (CameraProperty)[sender tag];
@@ -507,7 +488,7 @@ static CMTime (^exposureDurationForMode)(ExposureDurationMode) = ^CMTime(Exposur
             CGFloat frameMinX  = -(CGRectGetMidX(self.scaleSliderScrollView.frame));
             CGFloat frameMaxX  =  CGRectGetMaxX(self.scaleSliderScrollView.frame) + fabs(CGRectGetMidX(self.scaleSliderScrollView.frame));
             [self.scaleSliderScrollView setContentOffset:CGPointMake(-CGRectGetMidX(self.scaleSliderScrollView.frame) + ((frameMaxX + frameMinX) * value), 0.0) animated:TRUE];
-            [self setValue:value * 10.0 forCameraControlProperty:cameraProperty];
+            [self setValue:value forCameraControlProperty:cameraProperty];
         }
     });
 }
@@ -580,6 +561,7 @@ double (cameraPropertyFunc)(id<CameraControlsDelegate> delegate, CameraProperty 
             double value = cameraPropertyFunc(self.delegate, (CameraProperty)[obj tag]);
             NSString *title = [[self numberFormatter] stringFromNumber:[NSNumber numberWithFloat:value]];
             [obj setTitle:title forState:UIControlStateNormal];
+            [obj setTintColor:[UIColor systemBlueColor]];
         });
     }];
 }
